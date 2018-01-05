@@ -45,7 +45,8 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-      - 16.04
+      - trusty
+      - xenial
 
   galaxy_tags:
     # List tags for your role here, one per line. A tag is a keyword that describes
@@ -54,7 +55,7 @@ galaxy_info:
     #
     # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
     #       Maximum 20 tags per role.
-    docker
+    - docker
 
 dependencies: []
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
