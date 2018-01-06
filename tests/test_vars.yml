@@ -1,6 +1,6 @@
 ---
 
-container_default_basedir: "/tmp"
+container_default_basedir: "/notexists"
 
 containers:
   mycontainer:

@@ -18,6 +18,6 @@
 - name: "{{msg_prefix}} - Run 'post_command'"
   shell: "{{container.post_command}}"
   args:
-    chdir: "{{container.basedir}}/{{container.directory}}"
+    chdir: "'.' if container_dir|skipped else {{container.basedir}}/{{container.directory}}"
   when: container.post_command != ""
 
