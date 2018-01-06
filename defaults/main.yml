@@ -1,0 +1,40 @@
+---
+# defaults file for drpsychick-docker
+
+container_default_registry: ""
+container_default_basedir: "/root/container"
+container_default_owner: "root"
+container_default_group: "root"
+container_source_directory: "."
+
+container_required_vars:
+  - name
+  - hosts
+  - directory
+  - image
+  #- create_parameters
+  #- build
+
+container_default_vars:
+  - { name: "pull", default: false }    # pull image
+  - { name: "build", default: false }   # bulid from docker file (+pull : update source images)
+  - { name: "push", default: false }    # push to repository
+  - { name: "create", default: false }  # create container
+  - { name: "restart", default: false } # stop and restart existing container (use new container image if applicable)
+  - { name: "cleanup", default: false } # remove stale images
+  - { name: "purge", default: false }   # remove directory on the target
+  - { name: "alias", default: false }   # create aliases to control the container via ssh/shell
+  - { name: "version", default: "latest" } 
+  - { name: "basedir", default: "{{container_default_basedir}}" }
+  - { name: "owner", default: "{{container_default_owner}}" }
+  - { name: "group", default: "{{container_default_group}}" }
+  - { name: "registry", default: "{{container_default_registry}}" }
+  - { name: "pre_command", default: "" }
+  - { name: "create_parameters", default: "" }
+  - { name: "command", default: "" }
+  - { name: "post_command", default: "" }
+  
+containers:
+#  mycontainer: 
+#    name: "myecho"
+#

@@ -1,0 +1,12 @@
+---
+
+container_default_basedir: "/tmp"
+
+containers:
+  mycontainer:
+    hosts: ["all"]
+    name: "mytestcontainer"
+    image: "drpsychick/docker-dnsmasq"
+    directory: "dnsmasq"
+    pull: yes
+

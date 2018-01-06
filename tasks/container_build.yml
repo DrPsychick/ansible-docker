@@ -1,0 +1,13 @@
+---
+
+- name: "{{msg_prefix}} - Building..."
+  shell: docker build {{'--pull' if container.pull else ''}} -t {{container.image}} .
+  args:
+    chdir: "{{container.basedir}}/{{container.directory}}"
+  register: container_build
+
+- name: "{{msg_prefix}} - New image ID"
+  set_fact:
+    container_image_id_new: "{{container_build.stdout|regex_replace('^Successfully built (.*)$', '\\1')}}"
+  when: container_build|changed
+

@@ -1,0 +1,91 @@
+---
+
+- name: "{{cname}} - Set container variable"
+  set_fact:
+    container: "{{containers[cname]}}"
+    msg_prefix: "| {{cname}} @ {{ansible_hostname|lower}} |"
+
+- name: "{{msg_prefix}} - Set defaults"
+  set_fact:
+    container: "{{container|combine({ item.name: container[item.name] if container[item.name] is defined else item.default })}}"
+  with_items: "{{container_default_vars}}"
+
+# configuration
+- name: "{{msg_prefix}} - Create directory {{container.basedir}}/{{container.directory}}"
+  file: path={{container.basedir}}/{{container.directory}} state=directory
+  register: container_dir
+  when: container.files is defined or container.templates is defined
+
+- name: "{{msg_prefix}} - Copy files"
+  template: 
+    src: "{{container_source_directory}}/{{container.directory}}/{{container.files[fname].name}}"
+    dest: "{{container.basedir}}/{{container.directory}}/{{container.files[fname].name}}"
+    owner: "{{container.owner}}"
+    group: "{{container.group}}"
+    mode: "{{container.files[fname].mode}}"
+  with_items: "{{container.files}}"
+  loop_control:
+    loop_var: fname
+  when: container.files is defined
+  register: container_files
+
+- name: "{{msg_prefix}} - Copy templates"
+  template: 
+    src: "{{container_source_directory}}/{{container.directory}}/{{container.templates[tname].name}}"
+    dest: "{{container.basedir}}/{{container.directory}}/{{container.templates[tname].name}}"
+    owner: "{{container.owner}}"
+    group: "{{container.group}}"
+    mode: "{{container.templates[tname].mode}}"
+  with_items: "{{container.templates}}"
+  loop_control:
+    loop_var: tname
+  when: container.templates is defined
+  register: container_templates
+
+- name: "{{msg_prefix}} - Configuration changed?"
+  set_fact:
+    container_config_changed: container_dir|changed or container_files|changed or container_templates|changed
+
+# Pull
+- name: "{{msg_prefix}} - Pull image"
+  shell: docker pull {{container.image}}:{{container.version}}
+  register: container_pull
+  when: container.pull
+
+# Build [+ Push]
+- name: "{{msg_prefix}} - Build image"
+  include_tasks: container_build.yml
+  register: container_build
+  when: container.build and (container_config_changed or container_forcebuild)
+
+- name: "{{msg_prefix}} - Image changed?"
+  set_fact:
+    container_image_changed: container_pull|changed or container_build|changed
+
+# Stop  [+ Remove]
+- name: "{{msg_prefix}} - Stop container"
+  include_tasks: container_stop.yml
+  when: (container.create or container.restart) and \
+    (container_image_changed or container_forcecreate or container_forcerestart)
+
+# Create [+ Start]
+- name: "{{msg_prefix}} - Create container"
+  include_tasks: container_create.yml
+  when: (container.create or container.restart) and \
+    (container_image_changed or container_forcecreate or container_forcerestart)
+
+# Cleanup
+- name: "{{msg_prefix}} - Cleanup images"
+  include_tasks: container_cleanup.yml
+  when: container.cleanup and container_image_changed
+
+# Aliases
+- name: "{{msg_prefix}} - Setup aliases"
+  include_tasks: container_alias.yml
+  when: container.alias and container_image_changed
+
+# Purge
+- name: "{{msg_prefix}} - Purge target {{container.basedir}}/{{container.directory}}"
+  shell: rm -rf {{container.basedir}}/{{container.directory}}
+  when: container.purge
+

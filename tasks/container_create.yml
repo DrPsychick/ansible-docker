@@ -1,0 +1,17 @@
+---
+
+- name: "{{msg_prefix}} - Run 'pre_command'"
+  shell: "{{container.pre_command}}"
+  args:
+    chdir: "{{container.basedir}}/{{container.directory}}"
+  when: container.pre_command != ""
+
+- name: "{{msg_prefix}} - Create container"
+  shell: "docker create {{container.create_parameters}} --name {{container.name}} {{container.image}}:{{container.version}} {{container.command}}"
+  args:
+    chdir: "{{container.basedir}}/{{container.directory}}"
+
+- name: "{{msg_prefix}} - Start container"
+  shell: "docker start {{container.name}}"
+  when: container.restart
+  

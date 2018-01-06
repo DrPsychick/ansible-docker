@@ -1,0 +1,23 @@
+---
+
+- name: "{{msg_prefix}} - Container exists?"
+  shell: docker ps -qa -f name={{container.name}} --format '{{'{{'}} .Status {{'}}'}}'
+  register: container_exist
+  changed_when: container_exist.stdout_lines|length > 0
+
+- name: "{{msg_prefix}} - Stop container"
+  shell: "docker stop {{container.name}}"
+  register: container_stop
+  when: container_exist|changed and (container_exist.stdout|regex_search('^Up'))
+
+- name: "{{msg_prefix}} - Remove container"
+  shell: "docker rm {{container.name}}"
+  register: container_remove
+  when: container_exist|changed and container_image_changed
+
+- name: "{{msg_prefix}} - Run 'post_command'"
+  shell: "{{container.post_command}}"
+  args:
+    chdir: "{{container.basedir}}/{{container.directory}}"
+  when: container.post_command != ""
+
