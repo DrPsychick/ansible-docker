@@ -51,7 +51,7 @@
   shell: docker pull {{container.image}}:{{container.version}}
   register: container_pull
   when: container.pull
-  changed_when: "not container_pull.stdout|regex_search('Status: Image is up to date')"
+  changed_when: container_pull.stdout.find('Image is up to date') == -1
 
 # Build [+ Push]
 - name: "{{msg_prefix}} - Build image"
