@@ -14,10 +14,10 @@
   with_items: "{{container_required_vars}}"
   when: container[item] is not defined
 
-- name: "{{msg_prefix}} - Assert either 'create' OR 'restart' may be yes/true"
-  fail:
-    msg: "'create' and 'restart' are mutually exclusive!"
-  when: container.create is defined and container.create and container.restart is defined and container.restart
+#- name: "{{msg_prefix}} - Assert either 'create' OR 'restart' may be yes/true"
+#  fail:
+#    msg: "'create' and 'restart' are mutually exclusive!"
+#  when: container.create is defined and container.create and container.restart is defined and container.restart
 
 - name: "{{msg_prefix}} - Assert 'pull' OR 'build' must be defined"
   fail:
@@ -28,4 +28,19 @@
   fail:
     msg: "'container_default_basedir' and/or container 'directory' variable are not set!"
   when: container_default_basedir == "" or container.directory == ""
+
+- name: "{{msg_prefix}} - Assert 'forcebuild' requires 'build'"
+  fail:
+    msg: "'container_forcebuild' requires 'build' to be yes/true"
+  when: container_forcebuild and (container.build is not defined or not container.build)
+
+- name: "{{msg_prefix}} - Assert 'forcecreate' requires 'create'"
+  fail:
+    msg: "'container_forcecreate' requires 'create' to be yes/true"
+  when: container_forcebuild and (container.create is not defined or not container.create)
+
+- name: "{{msg_prefix}} - Assert 'forcerestart' requires 'restart'"
+  fail:
+    msg: "'container_forcerestart' requires 'restart' to be yes/true"
+  when: container_forcerestart and (container.restart is not defined or not container.restart)
 

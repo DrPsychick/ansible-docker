@@ -9,4 +9,5 @@ containers:
     image: "drpsychick/docker-dnsmasq"
     directory: "dnsmasq"
     pull: yes
+    create: yes
 

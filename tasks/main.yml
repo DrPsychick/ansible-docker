@@ -9,7 +9,6 @@
 - name: Set optional parameters
   set_fact:
     container_only: "{{ false if container_only is not defined else true }}"
-    container_forcepull: "{{ false if container_forcepull is not defined else true }}"
     container_forcebuild: "{{ false if container_forcebuild is not defined else true }}"
     container_forcecreate: "{{ false if container_forcecreate is not defined else true }}"
     container_forcerestart: "{{ false if container_forcerestart is not defined else true }}"
@@ -19,7 +18,7 @@
   with_items: "{{containers}}"
   loop_control:
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) \
+  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
     and (not container_only is defined or (container_only is defined and container_only == cname))
 
 - name: Process container
@@ -27,6 +26,6 @@
   with_items: "{{containers}}"
   loop_control: 
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) \
+  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
     and (not container_only is defined or (container_only is defined and container_only == cname))
  

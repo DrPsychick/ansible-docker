@@ -44,13 +44,14 @@
 
 - name: "{{msg_prefix}} - Configuration changed?"
   set_fact:
-    container_config_changed: container_dir|changed or container_files|changed or container_templates|changed
+    container_config_changed: "{{container_dir|changed or container_files|changed or container_templates|changed}}"
 
 # Pull
 - name: "{{msg_prefix}} - Pull image"
   shell: docker pull {{container.image}}:{{container.version}}
   register: container_pull
   when: container.pull
+  changed_when: "not container_pull.stdout|regex_search('Status: Image is up to date')"
 
 # Build [+ Push]
 - name: "{{msg_prefix}} - Build image"
@@ -60,18 +61,18 @@
 
 - name: "{{msg_prefix}} - Image changed?"
   set_fact:
-    container_image_changed: container_pull|changed or container_build|changed
+    container_image_changed: "{{container_pull|changed or container_build|changed}}"
 
 # Stop  [+ Remove]
 - name: "{{msg_prefix}} - Stop container"
   include_tasks: container_stop.yml
-  when: (container.create or container.restart) and \
+  when: (container.create or container.restart) and 
     (container_image_changed or container_forcecreate or container_forcerestart)
 
 # Create [+ Start]
 - name: "{{msg_prefix}} - Create container"
   include_tasks: container_create.yml
-  when: (container.create or container.restart) and \
+  when: (container.create or container.restart) and 
     (container_image_changed or container_forcecreate or container_forcerestart)
 
 # Cleanup
