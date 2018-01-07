@@ -32,15 +32,15 @@
 - name: "{{msg_prefix}} - Assert 'forcebuild' requires 'build'"
   fail:
     msg: "'container_forcebuild' requires 'build' to be yes/true"
-  when: container_forcebuild and (container.build is not defined or not container.build)
+  when: docker_deploy_forcebuild and (container.build is not defined or not container.build)
 
 - name: "{{msg_prefix}} - Assert 'forcecreate' requires 'create'"
   fail:
     msg: "'container_forcecreate' requires 'create' to be yes/true"
-  when: container_forcecreate and (container.create is not defined or not container.create)
+  when: docker_deploy_forcecreate and (container.create is not defined or not container.create)
 
 - name: "{{msg_prefix}} - Assert 'forcerestart' requires 'restart'"
   fail:
     msg: "'container_forcerestart' requires 'restart' to be yes/true"
-  when: container_forcerestart and (container.restart is not defined or not container.restart)
+  when: docker_deploy_forcerestart and (container.restart is not defined or not container.restart)
 

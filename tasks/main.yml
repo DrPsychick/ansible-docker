@@ -6,12 +6,14 @@
     msg: "'containers' variable must define at least one container"
   when: containers|length == 0
 
+# use different names internally, because include_vars cannot override set_fact
 - name: Set global variables
   set_fact:
-    container_only: "{{ false if container_only is not defined else container_only }}"
-    container_forcebuild: "{{ false if container_forcebuild is not defined else container_forcebuild }}"
-    container_forcecreate: "{{ false if container_forcecreate is not defined else container_forcecreate }}"
-    container_forcerestart: "{{ false if container_forcerestart is not defined else container_forcerestart}}"
+    docker_deploy_only: "{{ false if container_only is not defined else container_only }}"
+    docker_deploy_forcebuild: "{{ false if container_forcebuild is not defined else container_forcebuild }}"
+    docker_deploy_forcecreate: "{{ false if container_forcecreate is not defined else container_forcecreate }}"
+    docker_deploy_forcerestart: "{{ false if container_forcerestart is not defined else container_forcerestart}}"
+    docker_deploy_sourcedir: '{{ "" if container_default_sourcedir == "" else container_default_sourcedir }}'
 
 - name: Variable check
   include_tasks: variable_check.yml
@@ -19,7 +21,7 @@
   loop_control:
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
-    and (not container_only or container_only == cname))
+    and (not docker_deploy_only or docker_deploy_only == cname))
 
 - name: Process container
   include_tasks: container.yml
@@ -27,5 +29,5 @@
   loop_control: 
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
-    and (not container_only or container_only == cname))
+    and (not docker_deploy_only or docker_deploy_only == cname))
  

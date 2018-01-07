@@ -2,19 +2,19 @@
 # defaults file for drpsychick-docker
 
 container_default_registry: ""
-container_default_basedir: "/root/container"
+container_default_basedir: "/root/docker-deploy"
 container_default_owner: "root"
 container_default_group: "root"
 container_default_sourcedir: ""
 
+# variables that are required
 container_required_vars:
   - name
   - hosts
   - directory
-  - image
-  #- create_parameters
-  #- build
+  - image # required for build and pull
 
+# optional variables and their defaults
 container_default_vars:
   - { name: "pull", default: false }    # pull image
   - { name: "build", default: false }   # bulid from docker file (+pull : update source images)
@@ -32,10 +32,41 @@ container_default_vars:
   - { name: "registry", default: "{{container_default_registry}}" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }
+  - { name: "test_command", default: "" }
   - { name: "command", default: "" }
   - { name: "post_command", default: "" }
+
+## SOURCE
+# files/templates are read from
+# [container.sourcedir/]container.directory/{file|template}.name
+
+## TARGET
+# files/templates are written to
+# [container.basedir/]container.directory/{file|template}.name
   
-containers:
+# all available dict vars
+#containers:
 #  mycontainer: 
 #    name: "myecho"
-#
+#    hosts: ["host1", "host2", "all"]
+#    targetdir: "/tmp/containers" # base directory on target
+#    directory: "myechodir" # local directory
+#    owner: "root"
+#    group: "root"
+#    souredir: "/path/to/container/assets" # optional, not needed if files/templates are in the role directory
+#    image: "telegraf" # image name to pull or push
+#    version: "alpine" # optional, default 'latest'
+#    registry: "" # only needed for push: the registry URL to push to e.g. 192.168.1.10:6088
+#    pull: yes
+#    build: no
+#    push: no
+#    create: yes
+#    restart: no
+#    cleanup: yes
+#    alias: yes
+#    pre_command: "echo 'preparing environment'"  # run before creating the container. Can be complex, but then you should define it as multi-line with '>'
+#    create_parameters: "--env-file myecho.env"   # all parameters passed to docker create before the image name
+#    test_command: "--test"                       # command to run the container with after create (to test if it works)
+#    command: "echo '1'"                          # command passed to the image
+#    post_command: "echo 'cleaning up...'"        # run after removing the container
+

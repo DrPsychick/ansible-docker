@@ -45,6 +45,47 @@ container_forcerestart=yes
 ## Use case
 I use this to test, create, run and update containers in my local environment and on my dedicated server.
 
+## Examples
+Setup your own role which defines the docker containers and includes required files and templates. With this you can keep configuration and source files separate from the imported role and control different scenarios.
+
+Directory structure:
+```
+container-definition
+|- files : files for containers in container.name subdir
+   |- mytestcontainer
+      |- testfile
+|- templates : templates for containers in container.name subdir
+   |- mytestcontainer
+      |- mytestcontainer.env
+      |- Dockerfile
+|- tasks : if you want to selectively include variables or set specific variables
+|- vars : definition of containers
+```
+
+Variables:
+```
+# sets the source directory for files and templates to the current role path
+# cannot use "role_path" as it gets reevaluated in "docker-deploy" role somehow
+container_default_sourcedir: '{{playbook_dir + "/roles/containerdefinition"}}'
+
+containers: 
+  mytestcontainer:
+    name: "mytestcontainer2"
+    build: yes
+    templates:
+      dockerfile: { name: "Dockerfile", mode: "0644" }
+      envfile: { name: "mytestcontainer.env", mode: "0644" }
+
+```
+
+Playbook:
+```
+- name: Setup docker containers
+  hosts: all
+  roles:
+    - { role: containerdefinition }
+    - { role: DrPsychick.docker-deploy }
+```
 
 ## Internals 
 

@@ -1,7 +1,7 @@
 ---
 
-- name: "{{msg_prefix}} - Building..."
-  shell: docker build {{'--pull' if container.pull else ''}} -t {{container.image}} .
+- name: "{{msg_prefix}} - Building {{container.image}}:{{container.version}}"
+  shell: docker build {{'--pull' if container.pull else ''}} -t {{container.image}}:{{container.version}} .
   args:
     chdir: "{{container.basedir}}/{{container.directory}}"
   register: container_build
