@@ -37,7 +37,7 @@
 - name: "{{msg_prefix}} - Assert 'forcecreate' requires 'create'"
   fail:
     msg: "'container_forcecreate' requires 'create' to be yes/true"
-  when: container_forcebuild and (container.create is not defined or not container.create)
+  when: container_forcecreate and (container.create is not defined or not container.create)
 
 - name: "{{msg_prefix}} - Assert 'forcerestart' requires 'restart'"
   fail:

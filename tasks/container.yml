@@ -16,9 +16,12 @@
   register: container_dir
   when: container.files is defined or container.templates is defined
 
+- set_fact:
+    source_dir: '{{ "" if container.sourcedir == "" else container.sourcedir + "/files/"}}'
+
 - name: "{{msg_prefix}} - Copy files"
-  template: 
-    src: "{{container_source_directory}}/{{container.directory}}/{{container.files[fname].name}}"
+  copy: 
+    src: "{{source_dir}}{{container.directory}}/{{container.files[fname].name}}"
     dest: "{{container.basedir}}/{{container.directory}}/{{container.files[fname].name}}"
     owner: "{{container.owner}}"
     group: "{{container.group}}"
@@ -29,9 +32,12 @@
   when: container.files is defined
   register: container_files
 
+- set_fact:
+    source_dir: '{{ "" if container.sourcedir == "" else container.sourcedir + "/templates/"}}'
+
 - name: "{{msg_prefix}} - Copy templates"
   template: 
-    src: "{{container_source_directory}}/{{container.directory}}/{{container.templates[tname].name}}"
+    src: "{{source_dir}}{{container.directory}}/{{container.templates[tname].name}}"
     dest: "{{container.basedir}}/{{container.directory}}/{{container.templates[tname].name}}"
     owner: "{{container.owner}}"
     group: "{{container.group}}"

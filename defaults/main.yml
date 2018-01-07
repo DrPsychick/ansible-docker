@@ -5,7 +5,7 @@ container_default_registry: ""
 container_default_basedir: "/root/container"
 container_default_owner: "root"
 container_default_group: "root"
-container_source_directory: "."
+container_default_sourcedir: ""
 
 container_required_vars:
   - name
@@ -26,6 +26,7 @@ container_default_vars:
   - { name: "alias", default: false }   # create aliases to control the container via ssh/shell
   - { name: "version", default: "latest" } 
   - { name: "basedir", default: "{{container_default_basedir}}" }
+  - { name: "sourcedir", default: "{{container_default_sourcedir}}" }
   - { name: "owner", default: "{{container_default_owner}}" }
   - { name: "group", default: "{{container_default_group}}" }
   - { name: "registry", default: "{{container_default_registry}}" }

@@ -6,12 +6,12 @@
     msg: "'containers' variable must define at least one container"
   when: containers|length == 0
 
-- name: Set optional parameters
+- name: Set global variables
   set_fact:
-    container_only: "{{ false if container_only is not defined else true }}"
-    container_forcebuild: "{{ false if container_forcebuild is not defined else true }}"
-    container_forcecreate: "{{ false if container_forcecreate is not defined else true }}"
-    container_forcerestart: "{{ false if container_forcerestart is not defined else true }}"
+    container_only: "{{ false if container_only is not defined else container_only }}"
+    container_forcebuild: "{{ false if container_forcebuild is not defined else container_forcebuild }}"
+    container_forcecreate: "{{ false if container_forcecreate is not defined else container_forcecreate }}"
+    container_forcerestart: "{{ false if container_forcerestart is not defined else container_forcerestart}}"
 
 - name: Variable check
   include_tasks: variable_check.yml
@@ -19,7 +19,7 @@
   loop_control:
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
-    and (not container_only is defined or (container_only is defined and container_only == cname))
+    and (not container_only or container_only == cname))
 
 - name: Process container
   include_tasks: container.yml
@@ -27,5 +27,5 @@
   loop_control: 
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
-    and (not container_only is defined or (container_only is defined and container_only == cname))
+    and (not container_only or container_only == cname))
  

@@ -1,1 +1,8 @@
 ---
+
+- name: Remove stale images
+  shell: docker rmi $(docker images -q -f "dangling=true")
+  register: container_cleanup
+  changed_when: container_cleanup.stdout_lines|length >= 1
+  failed_when: false
+

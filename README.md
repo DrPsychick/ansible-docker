@@ -28,6 +28,12 @@ containers:
     pull: yes
 ```
 
+Special variables to limit your play to what you need. Will affect all instance of the role.
+```
+container_only=mytestcontainer
+container_forcerestart=yes
+```
+
 ### Example Playbook
 
     - hosts: dockerhosts
