@@ -1,5 +1,19 @@
 ## DrPsychick.docker-deploy
 
+[![Build Status](https://travis-ci.org/DrPsychick/ansible-docker.svg?branch=master)](https://travis-ci.org/DrPsychick/ansible-docker) 
+[![license](https://img.shields.io/github/license/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/blob/master/LICENSE) 
+[![GitHub stars](https://img.shields.io/github/stars/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb) 
+[![Contributors](https://img.shields.io/github/contributors/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/graphs/contributors)
+
+[![GitHub issues](https://img.shields.io/github/issues/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues) 
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/issues?q=is%3Aissue+is%3Aclosed) 
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls) 
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/drpsychick/docker-influxdb.svg)](https://github.com/drpsychick/docker-influxdb/pulls?q=is%3Apr+is%3Aclosed)
+<!--- 
+[![GitHub last commit (branch)](https://img.shields.io/github/last-commit/drpsychick/docker-influxdb/master.svg)](https://github.com/drpsychick/docker-influxdb) 
+--->
+
+
 Purpose:
 * manage a simple docker environment with ease and flexibility
 * use basic linux and docker commands
