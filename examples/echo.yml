@@ -1,0 +1,36 @@
+---
+
+# example configurations for certain scenarios which you can use as templates
+
+# subdirectories "templates" and "files" each with $directory subdirectory
+# would usually be set to the role directory where you define "containers" and keep their files
+container_source_directory: "/my/directory/where/i/store/templates/and/files"
+
+
+#### Example 1
+# * build container from Dockerfile 
+# * make sure its restarted when the image changed
+# * delete all files from target machine after (container can still be stopped and restarted)
+containers:
+  echo: 
+    name: "myecho"
+    hosts: ["all"]
+    directory: "myecho"
+    image: "cogniteev/echo"
+    # version: "latest"
+    pull: no
+    build: yes
+    create: no
+    restart: yes
+    purge: yes
+    files:
+      # $container_source_directory/files/myecho/Dockerfile
+      dockerfile: { name: "Dockerfile", mode: "0644" }
+    templates:
+      envfile: { name: "echo.env", mode: "0644" }
+    command: "echo 'running: \$FOO'"
+    pre_command: "echo 1"
+    create_parameters: "-e FOO=BAR --env-file echo.env"
+    post_command: "echo 1"
+    test_command: "ls -la"
+
