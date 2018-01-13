@@ -5,6 +5,7 @@
   register: container_exist
   changed_when: container_exist.stdout_lines|length > 0
 
+# running check: inspect container, grep for Status: running
 - name: "{{msg_prefix}} - Stop container"
   shell: "docker stop {{container.name}}"
   register: container_stop
