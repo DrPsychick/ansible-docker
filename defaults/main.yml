@@ -30,6 +30,7 @@ container_default_vars:
   - { name: "owner", default: "{{container_default_owner}}" }
   - { name: "group", default: "{{container_default_group}}" }
   - { name: "registry", default: "{{container_default_registry}}" }
+  - { name: "restart_policy", default: "no" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }
   - { name: "test_command", default: "" }
