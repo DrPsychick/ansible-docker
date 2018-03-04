@@ -5,10 +5,11 @@
   register: container_exist
   changed_when: container_exist.stdout_lines|length > 0
 
+# running check: inspect container, grep for Status: running
 - name: "{{msg_prefix}} - Stop container"
   shell: "docker stop {{container.name}}"
   register: container_stop
-  when: container_exist|changed and (container_exist.stdout|regex_search('^Up'))
+  when: container_exist|changed and (container_exist.stdout|regex_search('Up '))
 
 - name: "{{msg_prefix}} - Remove container"
   shell: "docker rm {{container.name}}"

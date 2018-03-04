@@ -30,10 +30,11 @@ container_default_vars:
   - { name: "owner", default: "{{container_default_owner}}" }
   - { name: "group", default: "{{container_default_group}}" }
   - { name: "registry", default: "{{container_default_registry}}" }
+  - { name: "restart_policy", default: "no" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }
   - { name: "test_command", default: "" }
-  - { name: "command", default: "" }
+  - { name: "run_command", default: "" }
   - { name: "post_command", default: "" }
 
 ## SOURCE
@@ -67,6 +68,6 @@ container_default_vars:
 #    pre_command: "echo 'preparing environment'"  # run before creating the container. Can be complex, but then you should define it as multi-line with '>'
 #    create_parameters: "--env-file myecho.env"   # all parameters passed to docker create before the image name
 #    test_command: "--test"                       # command to run the container with after create (to test if it works)
-#    command: "echo '1'"                          # command passed to the image
+#    run_command: "echo '1'"                      # command passed to the image
 #    post_command: "echo 'cleaning up...'"        # run after removing the container
 
