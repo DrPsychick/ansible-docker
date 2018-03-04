@@ -28,7 +28,7 @@ containers:
       dockerfile: { name: "Dockerfile", mode: "0644" }
     templates:
       envfile: { name: "echo.env", mode: "0644" }
-    command: "echo 'running: \$FOO'"
+    run_command: "echo 'running: \$FOO'"
     pre_command: "echo 1"
     create_parameters: "-e FOO=BAR --env-file echo.env"
     post_command: "echo 1"

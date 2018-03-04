@@ -7,7 +7,7 @@
   when: container.pre_command != ""
 
 - name: "{{msg_prefix}} - Create container"
-  shell: "docker create --restart={{container.restart_policy}} {{container.create_parameters}} --name {{container.name}} {{container.image}}:{{container.version}} {{container.command}}"
+  shell: "docker create --restart={{container.restart_policy}} {{container.create_parameters}} --name {{container.name}} {{container.image}}:{{container.version}} {{container.run_command}}"
   args:
     chdir: '{{ "." if container_dir|skipped else container.basedir+"/"+container.directory }}'
 
