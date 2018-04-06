@@ -73,13 +73,13 @@
 - name: "{{msg_prefix}} - Stop container"
   include_tasks: container_stop.yml
   when: (container.create or container.restart) and 
-    (container_image_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
+    (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
 
 # Create [+ Start]
 - name: "{{msg_prefix}} - Create container"
   include_tasks: container_create.yml
   when: (container.create or container.restart) and 
-    (container_image_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
+    (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
 
 # Cleanup
 - name: "{{msg_prefix}} - Cleanup images"
