@@ -1,8 +1,8 @@
 ---
 # defaults file for drpsychick-docker
 
-container_default_registry: ""
-container_default_basedir: "/root/docker-deploy"
+container_default_registry: "" # default registry to push images to
+container_default_basedir: "/root/docker-deploy" # default base directory on target machines
 container_default_owner: "root"
 container_default_group: "root"
 container_default_sourcedir: ""
