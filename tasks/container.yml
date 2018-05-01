@@ -89,7 +89,8 @@
 # Aliases
 - name: "{{msg_prefix}} - Setup aliases"
   include_tasks: container_alias.yml
-  when: container.alias and container_image_changed
+  when: container.alias and
+    (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
 
 # Purge
 - name: "{{msg_prefix}} - Purge target {{container.basedir}}/{{container.directory}}"
