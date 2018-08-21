@@ -67,7 +67,7 @@
 
 - name: "{{msg_prefix}} - Image changed?"
   set_fact:
-    container_image_changed: "{{container_pull|changed or container_build|changed}}"
+    container_image_changed: "{{container_pull has changed or container_build has changed}}"
 
 # Stop  [+ Remove]
 - name: "{{msg_prefix}} - Stop container"

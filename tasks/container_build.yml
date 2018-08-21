@@ -9,11 +9,11 @@
 - name: "{{msg_prefix}} - New image ID"
   set_fact:
     container_image_id_new: "{{container_build.stdout|regex_replace('^Successfully built (.*)$', '\\1')}}"
-  when: container_build|changed
+  when: container_build has changed
 
 - name: "{{msg_prefix}} - Push new image"
   shell: docker tag {{container.image}}:{{container.version}} {{container.registry}}/{{container.image}}:{{container.version}} && docker push {{container.registry+'/'+container.image}}
   args:
     chdir: "{{container.basedir+'/'+container.directory}}"
-  when: container.push and container_build|changed and container_image_id_new != ""
+  when: container.push and container_build has changed and container_image_id_new != ""
 

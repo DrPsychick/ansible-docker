@@ -3,26 +3,26 @@
 - name: "{{msg_prefix}} - Run 'pre_command'"
   shell: "{{container.pre_command}}"
   args:
-    chdir: '{{ "." if container_dir|skipped else container.basedir+"/"+container.directory }}'
+    chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.pre_command != ""
 
 - name: "{{msg_prefix}} - Create container"
   shell: "docker create --restart={{container.restart_policy}} {{container.create_parameters}} --name {{container.name}} {{container.image}}:{{container.version}} {{container.run_command}}"
   args:
-    chdir: '{{ "." if container_dir|skipped else container.basedir+"/"+container.directory }}'
+    chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
 
 - name: "{{msg_prefix}} - Test container"
   shell: "docker run --rm {{container.create_parameters}} --name {{container.name}}-test {{container.image}}:{{container.version}} {{container.test_command}}"
   args:
-    chdir: '{{ "." if container_dir|skipped else container.basedir+"/"+container.directory }}'
+    chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   register: container_test
   when: container.test_command != ""
 
 - name: "{{msg_prefix}} - Test output"
   debug: var=container_test.stdout_lines
-  when: container_test|changed
+  when: container_test has changed
 
 - name: "{{msg_prefix}} - Start container"
   shell: "docker start {{container.name}}"
-  when: container.restart
+  when: container.restart or container_stop has changed
   
