@@ -20,9 +20,9 @@
 
 - name: "{{msg_prefix}} - Test output"
   debug: var=container_test.stdout_lines
-  when: container_test has changed
+  when: container_test is changed
 
 - name: "{{msg_prefix}} - Start container"
   shell: "docker start {{container.name}}"
-  when: container.restart or container_stop has changed
+  when: container.restart or container_stop is changed
   
