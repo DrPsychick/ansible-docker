@@ -51,6 +51,7 @@
 - name: "{{msg_prefix}} - Configuration changed?"
   set_fact:
     container_config_changed: "{{container_dir is changed or container_files is changed or container_templates is changed}}"
+  changed_when: container_config_changed
 
 # Pull
 - name: "{{msg_prefix}} - Pull image {{container.image}}:{{container.version}}"
