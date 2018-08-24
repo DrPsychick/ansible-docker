@@ -6,6 +6,16 @@ container_default_basedir: "/root/docker-deploy" # default base directory on tar
 container_default_owner: "root"
 container_default_group: "root"
 container_default_sourcedir: ""
+# will be setup in "container_default_owner"/.bash_aliases
+# alias: container.<<name>>.<<alias.name>>='<<alias.cmd>> <<name>>'
+container_default_aliases: 
+  - { name: "start", cmd: "docker start" }
+  - { name: "stop", cmd: "docker stop" }
+  - { name: "restart", cmd: "docker restart" }
+  - { name: "inspect", cmd: "docker inspect" }
+  - { name: "status", cmd: !unsafe "echo -n \"Running: \"; docker inspect -f {{.State.Running}}" }
+  - { name: "attach", cmd: "docker attach --sig-proxy=false --no-stdin" }
+  - { name: "exec", cmd: "docker exec -it" }
 
 # variables that are required
 container_required_vars:
@@ -30,6 +40,7 @@ container_default_vars:
   - { name: "owner", default: "{{container_default_owner}}" }
   - { name: "group", default: "{{container_default_group}}" }
   - { name: "registry", default: "{{container_default_registry}}" }
+  - { name: "aliases", default: "{{container_default_aliases}}" }
   - { name: "restart_policy", default: "no" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }

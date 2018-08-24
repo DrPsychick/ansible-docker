@@ -50,7 +50,8 @@
 
 - name: "{{msg_prefix}} - Configuration changed?"
   set_fact:
-    container_config_changed: "{{container_dir|changed or container_files|changed or container_templates|changed}}"
+    container_config_changed: "{{container_dir is changed or container_files is changed or container_templates is changed}}"
+  changed_when: container_config_changed
 
 # Pull
 - name: "{{msg_prefix}} - Pull image {{container.image}}:{{container.version}}"
@@ -67,7 +68,7 @@
 
 - name: "{{msg_prefix}} - Image changed?"
   set_fact:
-    container_image_changed: "{{container_pull|changed or container_build|changed}}"
+    container_image_changed: "{{container_pull is changed or container_build is changed}}"
 
 # Stop  [+ Remove]
 - name: "{{msg_prefix}} - Stop container"
@@ -89,7 +90,8 @@
 # Aliases
 - name: "{{msg_prefix}} - Setup aliases"
   include_tasks: container_alias.yml
-  when: container.alias and container_image_changed
+  when: container.alias and
+    (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
 
 # Purge
 - name: "{{msg_prefix}} - Purge target {{container.basedir}}/{{container.directory}}"
