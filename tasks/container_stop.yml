@@ -1,23 +1,23 @@
 ---
 
-- name: "{{msg_prefix}} - Container exists?"
-  shell: docker ps -qa -f name={{container.name}} --format '{{'{{'}} .Status {{'}}'}}'
+- name: "{{ msg_prefix }} - Container exists?"
+  shell: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
   register: container_exist
   changed_when: container_exist.stdout_lines|length > 0
 
 # running check: inspect container, grep for Status: running
-- name: "{{msg_prefix}} - Stop container"
-  shell: "docker stop {{container.name}}"
+- name: "{{ msg_prefix }} - Stop container"
+  shell: "docker stop {{ container.name }}"
   register: container_stop
   when: container_exist is changed and (container_exist.stdout|regex_search('Up '))
 
-- name: "{{msg_prefix}} - Remove container"
-  shell: "docker rm {{container.name}}"
+- name: "{{ msg_prefix }} - Remove container"
+  shell: "docker rm {{ container.name }}"
   register: container_remove
   when: container_exist is changed
 
-- name: "{{msg_prefix}} - Run 'post_command'"
-  shell: "{{container.post_command}}"
+- name: "{{ msg_prefix }} - Run 'post_command'"
+  shell: "{{ container.post_command }}"
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.post_command != ""
