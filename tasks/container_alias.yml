@@ -6,5 +6,6 @@
     line: "alias container.{{ container.name }}.{{ item.name }}='{{ item.cmd }} {{ container.name }}'"
     regexp: "^alias container.{{ container.name }}.{{ item.name }}.*"
     create: yes
+  become: yes
   become_user: "{{ container.owner }}"
   with_items: "{{ container.aliases }}"

@@ -2,7 +2,7 @@
 # tasks file for drpsychick-docker
 
 - name: Assert "containers" is set
-  fail: 
+  fail:
     msg: "'containers' variable must define at least one container"
   when: containers|length == 0
 
@@ -20,14 +20,14 @@
   with_items: "{{ containers }}"
   loop_control:
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
+  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))
 
 - name: Process container
   include_tasks: container.yml
   with_items: "{{ containers }}"
-  loop_control: 
+  loop_control:
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts) 
+  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))
- 
+

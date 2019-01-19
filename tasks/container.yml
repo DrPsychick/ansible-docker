@@ -7,7 +7,8 @@
 
 - name: "{{ msg_prefix }} - Set defaults"
   set_fact:
-    container: "{{ container|combine({ item.name: container[item.name] if container[item.name] is defined else item.default }) }}"
+    container: "{{ container|combine({ item.name: container[item.name] if container[item.name] is defined
+      else item.default }) }}"
   with_items: "{{ container_default_vars }}"
 
 # configuration
@@ -21,7 +22,7 @@
     source_dir: '{{ "" if container.sourcedir == "" else container.sourcedir + "/" }}'
 
 - name: "{{ msg_prefix }} - Copy files"
-  copy: 
+  copy:
     src: "{{ source_dir }}{{ container.directory }}/{{ container.files[fname].name }}"
     dest: "{{ container.basedir }}/{{ container.directory }}/{{ container.files[fname].name }}"
     owner: "{{ container.owner }}"
@@ -34,7 +35,7 @@
   register: container_files
 
 - name: "{{ msg_prefix }} - Copy templates"
-  template: 
+  template:
     src: "{{ source_dir }}{{ container.directory }}/{{ container.templates[tname].name }}"
     dest: "{{ container.basedir }}/{{ container.directory }}/{{ container.templates[tname].name }}"
     owner: "{{ container.owner }}"
@@ -48,8 +49,20 @@
 
 - name: "{{ msg_prefix }} - Configuration changed?"
   set_fact:
-    container_config_changed: "{{ container_dir is changed or container_files is changed or container_templates is changed }}"
+    container_config_changed: "{{ container_dir is changed or container_files is changed or
+      container_templates is changed }}"
   changed_when: container_config_changed
+
+- name: "{{ msg_prefix }} - Check for existing container"
+  shell: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
+  register: container_exists_cmd
+  changed_when: false
+  when: container.create or container.restart
+
+- name: "{{ msg_prefix }} - Container exists?"
+  set_fact:
+    container_exists: "{{ true if container_exists_cmd.stdout_lines|length > 0 else false }}"
+  when: container.create or container.restart
 
 # Pull
 - name: "{{ msg_prefix }} - Pull image {{ container.image }}:{{ container.version }}"
@@ -62,7 +75,10 @@
 - name: "{{ msg_prefix }} - Build image"
   include_tasks: container_build.yml
   register: container_build
-  when: container.build and (container_config_changed or docker_deploy_forcebuild)
+  when: container.build and
+    (container_config_changed or
+    (not container_exists and (container.create or container.restart)) or
+    docker_deploy_forcebuild)
 
 - name: "{{ msg_prefix }} - Image changed?"
   set_fact:
@@ -71,14 +87,15 @@
 # Stop  [+ Remove]
 - name: "{{ msg_prefix }} - Stop container"
   include_tasks: container_stop.yml
-  when: (container.create or container.restart) and 
+  when: (container.create or container.restart) and
     (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
 
 # Create [+ Start]
 - name: "{{ msg_prefix }} - Create container"
   include_tasks: container_create.yml
-  when: (container.create or container.restart) and 
-    (container_image_changed or container_config_changed or docker_deploy_forcecreate or docker_deploy_forcerestart)
+  when: (container.create or container.restart) and
+    (container_image_changed or container_config_changed or not container_exists or docker_deploy_forcecreate or
+    docker_deploy_forcerestart)
 
 # Cleanup
 - name: "{{ msg_prefix }} - Cleanup images"
@@ -93,6 +110,6 @@
 
 # Purge
 - name: "{{ msg_prefix }} - Purge target {{ container.basedir }}/{{ container.directory }}"
-  shell: rm -rf {{ container.basedir }}/{{ container.directory }}
+  file: path="{{ container.basedir }}/{{ container.directory }}" state=absent
   when: container.purge
 

@@ -12,7 +12,10 @@
   when: container_build is changed
 
 - name: "{{ msg_prefix }} - Push new image"
-  shell: docker tag {{ container.image }}:{{ container.version }} {{ container.registry }}/{{ container.image }}:{{ container.version }} && docker push {{ container.registry+'/'+container.image }}
+  shell: |
+    docker tag {{ container.image }}:{{ container.version }} \
+    {{ container.registry }}/{{ container.image }}:{{ container.version }} \
+    && docker push {{ container.registry+'/'+container.image }}
   args:
     chdir: "{{ container.basedir+'/'+container.directory }}"
   when: container.push and container_build is changed and container_image_id_new != ""
