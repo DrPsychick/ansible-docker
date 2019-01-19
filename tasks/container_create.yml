@@ -12,6 +12,7 @@
     --name {{ container.name }} {{ container.image }}:{{ container.version }} {{ container.run_command }}
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
+  when: container.create or container.restart
 
 - name: "{{ msg_prefix }} - Test container"
   shell: |

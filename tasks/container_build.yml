@@ -5,6 +5,7 @@
   args:
     chdir: "{{ container.basedir+'/'+container.directory }}"
   register: container_build
+  when: container.build
 
 - name: "{{ msg_prefix }} - New image ID"
   set_fact:
