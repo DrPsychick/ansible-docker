@@ -80,7 +80,7 @@ Variables:
 ```
 # sets the source directory for files and templates to the current role path
 # cannot use "role_path" as it gets reevaluated in "docker-deploy" role somehow
-container_default_sourcedir: '{{playbook_dir + "/roles/containerdefinition"}}'
+container_default_sourcedir: '{{ playbook_dir + "/roles/containerdefinition" }}'
 
 containers: 
   mytestcontainer:

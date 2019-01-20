@@ -13,7 +13,7 @@ container_default_aliases:
   - { name: "stop", cmd: "docker stop" }
   - { name: "restart", cmd: "docker restart" }
   - { name: "inspect", cmd: "docker inspect" }
-  - { name: "status", cmd: !unsafe "echo -n \"Running: \"; docker inspect -f {{.State.Running}}" }
+  - { name: "status", cmd: !unsafe "echo -n \"Running: \"; docker inspect -f {{ .State.Running }}" }
   - { name: "attach", cmd: "docker attach --sig-proxy=false --no-stdin" }
   - { name: "exec", cmd: "docker exec -it" }
 
@@ -31,16 +31,17 @@ container_default_vars:
   - { name: "push", default: false }    # push to repository
   - { name: "create", default: false }  # create container
   - { name: "restart", default: false } # stop and restart existing container (use new container image if applicable)
+  - { name: "remove", default: false }  # remove the container - only when 'purge' and not 'restart'
   - { name: "cleanup", default: false } # remove stale images
   - { name: "purge", default: false }   # remove directory on the target
   - { name: "alias", default: false }   # create aliases to control the container via ssh/shell
   - { name: "version", default: "latest" } 
-  - { name: "basedir", default: "{{container_default_basedir}}" }
-  - { name: "sourcedir", default: "{{container_default_sourcedir}}" }
-  - { name: "owner", default: "{{container_default_owner}}" }
-  - { name: "group", default: "{{container_default_group}}" }
-  - { name: "registry", default: "{{container_default_registry}}" }
-  - { name: "aliases", default: "{{container_default_aliases}}" }
+  - { name: "basedir", default: "{{ container_default_basedir }}" }
+  - { name: "sourcedir", default: "{{ container_default_sourcedir }}" }
+  - { name: "owner", default: "{{ container_default_owner }}" }
+  - { name: "group", default: "{{ container_default_group }}" }
+  - { name: "registry", default: "{{ container_default_registry }}" }
+  - { name: "aliases", default: "{{ container_default_aliases }}" }
   - { name: "restart_policy", default: "no" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }

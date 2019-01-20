@@ -1,10 +1,11 @@
 ---
 
-- name: "{{msg_prefix}} - Setup aliases"
+- name: "{{ msg_prefix }} - Setup aliases"
   lineinfile:
     dest: ~/.bash_aliases
-    line: "alias container.{{container.name}}.{{item.name}}='{{item.cmd}} {{container.name}}'"
-    regexp: "^alias container.{{container.name}}.{{item.name}}.*"
+    line: "alias container.{{ container.name }}.{{ item.name }}='{{ item.cmd }} {{ container.name }}'"
+    regexp: "^alias container.{{ container.name }}.{{ item.name }}.*"
     create: yes
-  become_user: "{{container.owner}}"
-  with_items: "{{container.aliases}}"
+  become: yes
+  become_user: "{{ container.owner }}"
+  with_items: "{{ container.aliases }}"
