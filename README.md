@@ -111,6 +111,18 @@ Flow:
 * cleanup
 * setup aliases to maintain containers easily
 
+### Testing
+* create `ansible.cfg` file with content:
+```
+[defaults]
+roles_path = ../
+```
+* run lint + tests (see `.travis.yml`):
+  * `yamllint` - need to somehow pass ansible-galaxy rules...
+  * `ansible-lint ./`
+  * `ansible-playbook -i tests/inventory tests/test.yml --connection=local --become`
+  * `ansible-playbook -i tests/inventory tests/test_cleanup.yml --connection=local --become`
+
 ### License
 
 GPLv3
