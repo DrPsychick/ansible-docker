@@ -1,0 +1,9 @@
+---
+
+- name: Test Playbook Cleanup
+  hosts: localhost
+  remote_user: root
+  pre_tasks:
+    - include_vars: test_vars_cleanup.yml
+  roles:
+    - ansible-docker

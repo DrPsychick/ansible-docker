@@ -31,6 +31,7 @@ container_default_vars:
   - { name: "push", default: false }    # push to repository
   - { name: "create", default: false }  # create container
   - { name: "restart", default: false } # stop and restart existing container (use new container image if applicable)
+  - { name: "remove", default: false }  # remove the container - only when 'purge' and not 'restart'
   - { name: "cleanup", default: false } # remove stale images
   - { name: "purge", default: false }   # remove directory on the target
   - { name: "alias", default: false }   # create aliases to control the container via ssh/shell

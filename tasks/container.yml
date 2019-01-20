@@ -57,12 +57,12 @@
   shell: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
   register: container_exists_cmd
   changed_when: false
-  when: container.create or container.restart
+  when: container.create or container.restart or container.remove
 
 - name: "{{ msg_prefix }} - Container exists?"
   set_fact:
     container_exists: "{{ true if container_exists_cmd.stdout_lines|length > 0 else false }}"
-  when: container.create or container.restart
+  when: container.create or container.restart or container.remove
 
 # Pull
 - name: "{{ msg_prefix }} - Pull image {{ container.image }}:{{ container.version }}"
@@ -96,6 +96,10 @@
   when: (container.create or container.restart) and
     (container_image_changed or container_config_changed or not container_exists or docker_deploy_forcecreate or
     docker_deploy_forcerestart)
+
+- name: "{{ msg_prefix }} - Remove container (stop+remove)"
+  include_tasks: container_stop.yml
+  when: container.remove and not container.restart
 
 # Cleanup
 - name: "{{ msg_prefix }} - Cleanup images"

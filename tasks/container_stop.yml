@@ -9,7 +9,7 @@
 - name: "{{ msg_prefix }} - Remove container"
   shell: "docker rm {{ container.name }}"
   register: container_remove
-  when: container_exists
+  when: container_exists or (container.create and container.remove)
 
 - name: "{{ msg_prefix }} - Run 'post_command'"
   shell: "{{ container.post_command }}"

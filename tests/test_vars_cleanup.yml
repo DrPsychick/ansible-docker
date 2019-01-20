@@ -8,14 +8,11 @@ containers:
     name: "mytestcontainer"
     image: "drpsychick/docker-dnsmasq"
     directory: "dnsmasq"
-    pull: yes
-    create: yes
+    remove: yes
   mybuild:
     hosts: ["all"]
     name: "mybuildtest"
     image: "mybuildtest"
     directory: "mybuildtest"
-    build: yes
     cleanup: yes
-    files:
-      dockerfile: { name: "Dockerfile", mode: "0644" }
+    purge: yes
