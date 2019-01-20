@@ -116,4 +116,3 @@
 - name: "{{ msg_prefix }} - Purge target {{ container.basedir }}/{{ container.directory }}"
   file: path="{{ container.basedir }}/{{ container.directory }}" state=absent
   when: container.purge
-

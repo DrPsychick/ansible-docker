@@ -20,4 +20,3 @@
   args:
     chdir: "{{ container.basedir+'/'+container.directory }}"
   when: container.push and container_build is changed and container_image_id_new != ""
-

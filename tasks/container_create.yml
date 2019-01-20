@@ -30,4 +30,3 @@
 - name: "{{ msg_prefix }} - Start container"
   shell: "docker start {{ container.name }}"
   when: container.restart or (container_exists and container_stop is changed)
-

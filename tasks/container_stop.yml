@@ -16,4 +16,3 @@
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.post_command != ""
-

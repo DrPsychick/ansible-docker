@@ -1,11 +1,9 @@
 ---
-
 # example configurations for certain scenarios which you can use as templates
 
-# subdirectories "templates" and "files" each with $directory subdirectory
+# subdirectories "templates" and "files" each within "directory" subdirectory
 # would usually be set to the role directory where you define "containers" and keep their files
 container_source_directory: "/my/directory/where/i/store/templates/and/files"
-
 
 #### Example 1
 # * build container from Dockerfile 
@@ -24,13 +22,12 @@ containers:
     restart: yes
     purge: yes
     files:
-      # $container_source_directory/files/myecho/Dockerfile
+      # <container_source_directory>/files/myecho/Dockerfile
       dockerfile: { name: "Dockerfile", mode: "0644" }
     templates:
       envfile: { name: "echo.env", mode: "0644" }
-    run_command: "echo 'running: \$FOO'"
+    run_command: 'echo "running: $FOO"'
     pre_command: "echo 1"
     create_parameters: "-e FOO=BAR --env-file echo.env"
     post_command: "echo 1"
     test_command: "ls -la"
-

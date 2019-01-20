@@ -30,4 +30,3 @@
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))
-

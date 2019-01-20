@@ -5,4 +5,3 @@
   register: container_cleanup
   changed_when: container_cleanup.stdout_lines|length >= 1
   failed_when: false
-

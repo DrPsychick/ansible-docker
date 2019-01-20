@@ -82,4 +82,3 @@ container_default_vars:
 #    test_command: "--test"                       # command to run the container with after create (to test if it works)
 #    run_command: "echo '1'"                      # command passed to the image
 #    post_command: "echo 'cleaning up...'"        # run after removing the container
-
