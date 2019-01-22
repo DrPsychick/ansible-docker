@@ -1,10 +1,13 @@
 ---
 
+# skip ansible lint warnings as we want to allow all kinds of shell magic
 - name: "{{ msg_prefix }} - Run 'pre_command'"
   shell: "{{ container.pre_command }}"
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.pre_command != ""
+  tags:
+    - skip_ansible_lint
 
 - name: "{{ msg_prefix }} - Create container"
   shell: |
@@ -13,6 +16,8 @@
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.create or container.restart
+  tags:
+    - skip_ansible_lint
 
 - name: "{{ msg_prefix }} - Test container"
   shell: |
@@ -22,11 +27,13 @@
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   register: container_test
   when: container.test_command != ""
+  tags:
+    - skip_ansible_lint
 
 - name: "{{ msg_prefix }} - Test output"
   debug: var=container_test.stdout_lines
   when: container_test is changed
 
 - name: "{{ msg_prefix }} - Start container"
-  shell: "docker start {{ container.name }}"
+  command: docker start {{ container.name }}
   when: container.restart or (container_exists and container_stop is changed)

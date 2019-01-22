@@ -2,17 +2,20 @@
 
 # running check: inspect container, grep for Status: running
 - name: "{{ msg_prefix }} - Stop container"
-  shell: "docker stop {{ container.name }}"
+  command: "docker stop {{ container.name|quote }}"
   register: container_stop
   when: container_exists and (container_exists_cmd.stdout|regex_search('Up '))
 
 - name: "{{ msg_prefix }} - Remove container"
-  shell: "docker rm {{ container.name }}"
+  command: docker rm {{ container.name|quote }}
   register: container_remove
   when: container_exists or (container.create and container.remove)
 
+# run in shell, allowing all kinds of shell magic (pipe, ;, ||, ...)
 - name: "{{ msg_prefix }} - Run 'post_command'"
   shell: "{{ container.post_command }}"
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.post_command != ""
+  tags:
+    - skip_ansible_lint
