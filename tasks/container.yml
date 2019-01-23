@@ -19,7 +19,7 @@
 
 - name: "{{ msg_prefix }} - Set path variables"
   set_fact:
-    source_dir: '{{ "" if container.sourcedir == "" else container.sourcedir + "/" }}'
+    source_dir: '{{ "" if not container.sourcedir else container.sourcedir + "/" }}'
 
 - name: "{{ msg_prefix }} - Copy files"
   copy:
@@ -54,7 +54,7 @@
   changed_when: container_config_changed
 
 - name: "{{ msg_prefix }} - Check for existing container"
-  shell: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
+  command: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
   register: container_exists_cmd
   changed_when: false
   when: container.create or container.restart or container.remove
@@ -66,7 +66,7 @@
 
 # Pull
 - name: "{{ msg_prefix }} - Pull image {{ container.image }}:{{ container.version }}"
-  shell: docker pull {{ container.image }}:{{ container.version }}
+  command: docker pull {{ container.image }}:{{ container.version }}
   register: container_pull
   when: container.pull
   changed_when: container_pull.stdout.find('Image is up to date') == -1
@@ -116,4 +116,3 @@
 - name: "{{ msg_prefix }} - Purge target {{ container.basedir }}/{{ container.directory }}"
   file: path="{{ container.basedir }}/{{ container.directory }}" state=absent
   when: container.purge
-

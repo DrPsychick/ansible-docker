@@ -1,7 +1,7 @@
 ---
 
 - name: "{{ msg_prefix }} - Building {{ container.image }}:{{ container.version }}"
-  shell: docker build {{ '--pull' if container.pull else '' }} -t {{ container.image }}:{{ container.version }} .
+  command: docker build {{ '--pull' if container.pull else '' }} -t {{ container.image }}:{{ container.version }} .
   args:
     chdir: "{{ container.basedir+'/'+container.directory }}"
   register: container_build
@@ -19,5 +19,4 @@
     && docker push {{ container.registry+'/'+container.image }}
   args:
     chdir: "{{ container.basedir+'/'+container.directory }}"
-  when: container.push and container_build is changed and container_image_id_new != ""
-
+  when: container.push and container_build is changed and container_image_id_new

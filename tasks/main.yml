@@ -13,7 +13,7 @@
     docker_deploy_forcebuild: "{{ false if container_forcebuild is not defined else container_forcebuild }}"
     docker_deploy_forcecreate: "{{ false if container_forcecreate is not defined else container_forcecreate }}"
     docker_deploy_forcerestart: "{{ false if container_forcerestart is not defined else container_forcerestart }}"
-    docker_deploy_sourcedir: '{{ "" if container_default_sourcedir == "" else container_default_sourcedir }}'
+    docker_deploy_sourcedir: '{{ "" if not container_default_sourcedir else container_default_sourcedir }}'
 
 - name: Variable check
   include_tasks: variable_check.yml
@@ -30,4 +30,3 @@
     loop_var: cname
   when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))
-

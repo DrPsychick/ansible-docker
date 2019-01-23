@@ -28,7 +28,7 @@
 - name: "{{ msg_prefix }} - Assert directory must be defined"
   fail:
     msg: "'container_default_basedir' and/or container 'directory' variable are not set!"
-  when: container_default_basedir == "" or container.directory == ""
+  when: not container_default_basedir or not container.directory
 
 - name: "{{ msg_prefix }} - Assert 'forcebuild' requires 'build'"
   fail:

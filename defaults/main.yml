@@ -8,7 +8,7 @@ container_default_group: "root"
 container_default_sourcedir: ""
 # will be setup in "container_default_owner"/.bash_aliases
 # alias: container.<<name>>.<<alias.name>>='<<alias.cmd>> <<name>>'
-container_default_aliases: 
+container_default_aliases:
   - { name: "start", cmd: "docker start" }
   - { name: "stop", cmd: "docker stop" }
   - { name: "restart", cmd: "docker restart" }
@@ -31,11 +31,11 @@ container_default_vars:
   - { name: "push", default: false }    # push to repository
   - { name: "create", default: false }  # create container
   - { name: "restart", default: false } # stop and restart existing container (use new container image if applicable)
-  - { name: "remove", default: false }  # remove the container - only when 'purge' and not 'restart'
+  - { name: "remove", default: false }  # remove the container - only when 'restart'=false
   - { name: "cleanup", default: false } # remove stale images
   - { name: "purge", default: false }   # remove directory on the target
   - { name: "alias", default: false }   # create aliases to control the container via ssh/shell
-  - { name: "version", default: "latest" } 
+  - { name: "version", default: "latest" }
   - { name: "basedir", default: "{{ container_default_basedir }}" }
   - { name: "sourcedir", default: "{{ container_default_sourcedir }}" }
   - { name: "owner", default: "{{ container_default_owner }}" }
@@ -56,10 +56,10 @@ container_default_vars:
 ## TARGET
 # files/templates are written to
 # [container.basedir/]container.directory/{file|template}.name
-  
+
 # all available dict vars
 #containers:
-#  mycontainer: 
+#  mycontainer:
 #    name: "myecho"
 #    hosts: ["host1", "host2", "all"]
 #    targetdir: "/tmp/containers" # base directory on target
@@ -77,9 +77,9 @@ container_default_vars:
 #    restart: no
 #    cleanup: yes
 #    alias: yes
-#    pre_command: "echo 'preparing environment'"  # run before creating the container. Can be complex, but then you should define it as multi-line with '>'
+#    pre_command: "echo 'preparing environment'"  # run before creating the container.
+#                                                 # Can be complex, but then you should define it as multi-line with '>'
 #    create_parameters: "--env-file myecho.env"   # all parameters passed to docker create before the image name
 #    test_command: "--test"                       # command to run the container with after create (to test if it works)
 #    run_command: "echo '1'"                      # command passed to the image
 #    post_command: "echo 'cleaning up...'"        # run after removing the container
-
