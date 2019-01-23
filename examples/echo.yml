@@ -6,11 +6,11 @@
 container_source_directory: "/my/directory/where/i/store/templates/and/files"
 
 #### Example 1
-# * build container from Dockerfile 
+# * build container from Dockerfile
 # * make sure its restarted when the image changed
 # * delete all files from target machine after (container can still be stopped and restarted)
 containers:
-  echo: 
+  echo:
     name: "myecho"
     hosts: ["all"]
     directory: "myecho"

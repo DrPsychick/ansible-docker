@@ -5,7 +5,7 @@
   shell: "{{ container.pre_command }}"
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
-  when: container.pre_command != ""
+  when: container.pre_command
   tags:
     - skip_ansible_lint
 
@@ -26,7 +26,7 @@
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   register: container_test
-  when: container.test_command != ""
+  when: container.test_command
   tags:
     - skip_ansible_lint
 

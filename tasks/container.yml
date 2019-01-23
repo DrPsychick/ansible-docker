@@ -19,7 +19,7 @@
 
 - name: "{{ msg_prefix }} - Set path variables"
   set_fact:
-    source_dir: '{{ "" if container.sourcedir == "" else container.sourcedir + "/" }}'
+    source_dir: '{{ "" if not container.sourcedir else container.sourcedir + "/" }}'
 
 - name: "{{ msg_prefix }} - Copy files"
   copy:
