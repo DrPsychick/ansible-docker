@@ -5,3 +5,12 @@ repos:
   - id: ansible-lint
     files: \.(yaml|yml)$
     exclude: .travis.yml
+
+- repo: local
+  hooks:
+  - id: travis-lint
+    name: travis-lint
+    language: docker_image
+    entry: --user root caktux/travis-cli
+    args: ["lint"]
+    files: .travis.yml
