@@ -126,4 +126,3 @@ roles_path = ../
 ### License
 
 GPLv3
-
