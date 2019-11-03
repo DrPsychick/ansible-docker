@@ -45,6 +45,8 @@ containers:
 Special variables to limit your play to what you need. Will affect all instance of the role.
 ```
 container_only=mytestcontainer
+container_forcebuild=yes
+container_forcecreate=yes
 container_forcerestart=yes
 ```
 
