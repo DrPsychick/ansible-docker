@@ -68,7 +68,7 @@
 - name: "{{ msg_prefix }} - Pull image {{ container.image }}:{{ container.version }}"
   command: docker pull {{ container.image }}:{{ container.version }}
   register: container_pull
-  when: container.pull
+  when: container.pull and not container.build
   changed_when: container_pull.stdout.find('Image is up to date') == -1
 
 # Build [+ Push]
