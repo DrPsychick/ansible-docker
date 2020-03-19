@@ -24,6 +24,7 @@ containers:
     files:
       # <container_source_directory>/files/myecho/Dockerfile
       dockerfile: { name: "Dockerfile", mode: "0644" }
+      # initialconfig: { name: "config", mode: "0644", force: false } # don't overwrite, just create when missing
     templates:
       envfile: { name: "echo.env", mode: "0644" }
     run_command: 'echo "running: $FOO"'

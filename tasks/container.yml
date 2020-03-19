@@ -28,6 +28,7 @@
     owner: "{{ container.owner }}"
     group: "{{ container.group }}"
     mode: "{{ container.files[fname].mode }}"
+    force: "{{ container.files[fname].force |default(true) }}"
   with_items: "{{ container.files }}"
   loop_control:
     loop_var: fname
@@ -41,6 +42,7 @@
     owner: "{{ container.owner }}"
     group: "{{ container.group }}"
     mode: "{{ container.templates[tname].mode }}"
+    force: "{{ container.templates[tname].force |default(true) }}"
   with_items: "{{ container.templates }}"
   loop_control:
     loop_var: tname
