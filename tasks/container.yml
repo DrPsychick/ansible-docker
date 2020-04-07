@@ -21,6 +21,16 @@
   set_fact:
     source_dir: '{{ "" if not container.sourcedir else container.sourcedir + "/" }}'
 
+- name: "{{ msg_prefix }} - Create file directories"
+  file:
+    path: "{{ container.basedir }}/{{ container.directory }}/{{ container.files[fname].name
+      | regex_replace('[^/]*$', '') }}"
+    state: directory
+  with_items: "{{ container.files }}"
+  loop_control:
+    loop_var: fname
+  when: "container.files is defined"
+
 - name: "{{ msg_prefix }} - Copy files"
   copy:
     src: "{{ source_dir }}{{ container.directory }}/{{ container.files[fname].name }}"
@@ -34,6 +44,16 @@
     loop_var: fname
   when: container.files is defined
   register: container_files
+
+- name: "{{ msg_prefix }} - Create template directories"
+  file:
+    path: "{{ container.basedir }}/{{ container.directory }}/{{ container.templates[tname].name
+      | regex_replace('[^/]*$', '') }}"
+    state: directory
+  with_items: "{{ container.templates }}"
+  loop_control:
+    loop_var: tname
+  when: "container.templates is defined"
 
 - name: "{{ msg_prefix }} - Copy templates"
   template:

@@ -1,0 +1,1 @@
+Test if directories are created
