@@ -19,3 +19,4 @@ containers:
     cleanup: yes
     files:
       dockerfile: { name: "Dockerfile", mode: "0644" }
+      testdir: { name: "directory/testfile.md", mode: "0644" }
