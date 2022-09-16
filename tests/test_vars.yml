@@ -6,7 +6,7 @@ containers:
   mycontainer:
     hosts: ["all"]
     name: "mytestcontainer"
-    image: "drpsychick/docker-dnsmasq"
+    image: "drpsychick/dnsmasq"
     directory: "dnsmasq"
     pull: yes
     create: yes
