@@ -1,1 +1,1 @@
-FROM drpsychick/docker-dnsmasq
+FROM drpsychick/dnsmasq
