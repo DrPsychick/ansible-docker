@@ -76,7 +76,7 @@
   changed_when: container_config_changed
 
 - name: "{{ msg_prefix }} - Check for existing container"
-  command: docker ps -qa -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
+  command: docker ps -a -f name={{ container.name }} --format '{{ '{{ ' }} .Status {{ ' }}' }}'
   register: container_exists_cmd
   changed_when: false
   when: container.create or container.restart or container.remove
