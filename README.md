@@ -1,4 +1,4 @@
-## DrPsychick.docker-deploy
+## DrPsychick.ansible_docker
 
 [![Build Status](https://travis-ci.org/DrPsychick/ansible-docker.svg?branch=master)](https://travis-ci.org/DrPsychick/ansible-docker) 
 [![license](https://img.shields.io/github/license/drpsychick/ansible-docker.svg)](https://github.com/drpsychick/ansible-docker/blob/master/LICENSE) 
@@ -56,7 +56,7 @@ container_forcerestart=yes
       pre_tasks:
         - include_vars: mycontainers_definition.yml
       roles:
-        - { role: DrPsychick.docker-deploy }
+        - { role: DrPsychick.ansible_docker }
 
 ## Use case
 I use this to test, create, run and update containers in my local environment and on my dedicated server.
@@ -81,7 +81,7 @@ container-definition
 Variables:
 ```
 # sets the source directory for files and templates to the current role path
-# cannot use "role_path" as it gets reevaluated in "docker-deploy" role somehow
+# cannot use "role_path" as it gets reevaluated in "ansible_docker" role somehow
 container_default_sourcedir: '{{ playbook_dir + "/roles/containerdefinition" }}'
 
 containers: 
@@ -100,7 +100,7 @@ Playbook:
   hosts: all
   roles:
     - { role: containerdefinition }
-    - { role: DrPsychick.docker-deploy }
+    - { role: DrPsychick.ansible_docker }
 ```
 
 ## Internals 
