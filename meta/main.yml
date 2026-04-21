@@ -1,7 +1,7 @@
 galaxy_info:
   author: DrPsychick
   namespace: drpsychick
-  role_name: ansible_docker
+  role_name: ansible-docker
   description: role to setup docker and manage containers on multiple target machines
 
   license: GPLv3
