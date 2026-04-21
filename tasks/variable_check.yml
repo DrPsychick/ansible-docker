@@ -1,12 +1,12 @@
 ---
 
 - name: "{{ cname }} - Set container variable"
-  set_fact:
+  ansible.builtin.set_fact:
     container: "{{ containers[cname] }}"
-    msg_prefix: "| {{ cname }} @ {{ ansible_facts['hostname']|lower }} |"
+    msg_prefix: "| {{ cname }} @ {{ ansible_facts['hostname'] | lower }} |"
 
 - name: "{{ msg_prefix }} - Assert required variables"
-  fail:
+  ansible.builtin.fail:
     msg: >
       --> '{{ item }}' variable is not defined!
       Requied variables:
@@ -14,33 +14,33 @@
   with_items: "{{ container_required_vars }}"
   when: container[item] is not defined
 
-#- name: "{{ msg_prefix }} - Assert either 'create' OR 'restart' may be yes/true"
+# - name: "{{ msg_prefix }} - Assert either 'create' OR 'restart' may be true"
 #  fail:
 #    msg: "'create' and 'restart' are mutually exclusive!"
 #  when: container.create is defined and container.create and container.restart is defined and container.restart
 
 - name: "{{ msg_prefix }} - Assert 'pull', 'build', 'remove' or 'purge' must be defined"
-  fail:
+  ansible.builtin.fail:
     msg: "either 'pull' or 'build' must be defined!"
   when: container.pull is not defined and container.build is not defined and
     container.remove is not defined and container.purge is not defined
 
 - name: "{{ msg_prefix }} - Assert directory must be defined"
-  fail:
+  ansible.builtin.fail:
     msg: "'container_default_basedir' and/or container 'directory' variable are not set!"
   when: not container_default_basedir is defined or not container.directory is defined
 
 - name: "{{ msg_prefix }} - Assert 'forcebuild' requires 'build'"
-  fail:
-    msg: "'container_forcebuild' requires 'build' to be yes/true"
+  ansible.builtin.fail:
+    msg: "'container_forcebuild' requires 'build' to be true"
   when: docker_deploy_forcebuild and (container.build|default(false))
 
 - name: "{{ msg_prefix }} - Assert 'forcecreate' requires 'create'"
-  fail:
-    msg: "'container_forcecreate' requires 'create' to be yes/true"
+  ansible.builtin.fail:
+    msg: "'container_forcecreate' requires 'create' to be true"
   when: docker_deploy_forcecreate and (container.create|default(false))
 
 - name: "{{ msg_prefix }} - Assert 'forcerestart' requires 'restart'"
-  fail:
-    msg: "'container_forcerestart' requires 'restart' to be yes/true"
+  ansible.builtin.fail:
+    msg: "'container_forcerestart' requires 'restart' to be true"
   when: docker_deploy_forcerestart and (container.restart|default(false))

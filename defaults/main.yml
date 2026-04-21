@@ -42,7 +42,7 @@ container_default_vars:
   - { name: "group", default: "{{ container_default_group }}" }
   - { name: "registry", default: "{{ container_default_registry }}" }
   - { name: "aliases", default: "{{ container_default_aliases }}" }
-  - { name: "restart_policy", default: "no" }
+  - { name: "restart_policy", default: "false" }
   - { name: "pre_command", default: "" }
   - { name: "create_parameters", default: "" }
   - { name: "test_command", default: "" }
@@ -58,7 +58,7 @@ container_default_vars:
 # [container.basedir/]container.directory/{file|template}.name
 
 # all available dict vars
-#containers:
+# containers:
 #  mycontainer:
 #    name: "myecho"
 #    hosts: ["host1", "host2", "all"]
@@ -70,13 +70,13 @@ container_default_vars:
 #    image: "telegraf" # image name to pull or push
 #    version: "alpine" # optional, default 'latest'
 #    registry: "" # only needed for push: the registry URL to push to e.g. 192.168.1.10:6088
-#    pull: yes
-#    build: no
-#    push: no
-#    create: yes
-#    restart: no
-#    cleanup: yes
-#    alias: yes
+#    pull: true
+#    build: false
+#    push: false
+#    create: true
+#    restart: false
+#    cleanup: true
+#    alias: true
 #    pre_command: "echo 'preparing environment'"  # run before creating the container.
 #                                                 # Can be complex, but then you should define it as multi-line with '>'
 #    create_parameters: "--env-file myecho.env"   # all parameters passed to docker create before the image name

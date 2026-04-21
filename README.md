@@ -39,15 +39,15 @@ containers:
     name: "mytestcontainer"
     image: "cogniteev/echo"
     directory: "mytestcontainer"
-    pull: yes
+    pull: true
 ```
 
 Special variables to limit your play to what you need. Will affect all instance of the role.
 ```
 container_only=mytestcontainer
-container_forcebuild=yes
-container_forcecreate=yes
-container_forcerestart=yes
+container_forcebuild=true
+container_forcecreate=true
+container_forcerestart=true
 ```
 
 ### Example Playbook
@@ -87,7 +87,7 @@ container_default_sourcedir: '{{ playbook_dir + "/roles/containerdefinition" }}'
 containers: 
   mytestcontainer:
     name: "mytestcontainer2"
-    build: yes
+    build: true
     templates:
       dockerfile: { name: "Dockerfile", mode: "0644" }
       envfile: { name: "mytestcontainer.env", mode: "0644" }

@@ -5,6 +5,6 @@
   remote_user: root
   pre_tasks:
     - name: Load test_vars
-      include_vars: test_vars.yml
+      ansible.builtin.include_vars: test_vars.yml
   roles:
     - ansible-docker
