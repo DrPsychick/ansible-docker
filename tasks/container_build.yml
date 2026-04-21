@@ -1,22 +1,22 @@
 ---
 
-- name: "{{ msg_prefix }} - Building {{ container.image }}:{{ container.version }}"
-  command: docker build {{ '--pull' if container.pull else '' }} -t {{ container.image }}:{{ container.version }} .
+- name: "{{ msg_prefix }} - Building {{ container.image }}:{{ container.version }}" # noqa no-changed-when
+  ansible.builtin.command: docker build {{ '--pull' if container.pull else '' }} -t {{ container.image }}:{{ container.version }} .
   args:
-    chdir: "{{ container.basedir+'/'+container.directory }}"
+    chdir: "{{ container.basedir + '/' + container.directory }}"
   register: container_build
   when: container.build
 
-- name: "{{ msg_prefix }} - New image ID"
-  set_fact:
-    container_image_id_new: "{{ container_build.stdout|regex_replace('^Successfully built (.*)$', '\\1') }}"
+- name: "{{ msg_prefix }} - New image ID" # noqa no-handler
+  ansible.builtin.set_fact:
+    container_image_id_new: "{{ container_build.stdout | regex_replace('^Successfully built (.*)$', '\\1') }}"
   when: container_build is changed
 
-- name: "{{ msg_prefix }} - Push new image"
-  shell: |
+- name: "{{ msg_prefix }} - Push new image" # noqa no-changed-when
+  ansible.builtin.shell: |
     docker tag {{ container.image }}:{{ container.version }} \
     {{ container.registry }}/{{ container.image }}:{{ container.version }} \
-    && docker push {{ container.registry+'/'+container.image }}
+    && docker push {{ container.registry + '/' + container.image }}
   args:
-    chdir: "{{ container.basedir+'/'+container.directory }}"
+    chdir: "{{ container.basedir + '/' + container.directory }}"
   when: container.push and container_build is changed and container_image_id_new

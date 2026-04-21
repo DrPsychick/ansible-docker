@@ -16,11 +16,11 @@ containers:
     directory: "myecho"
     image: "cogniteev/echo"
     # version: "latest"
-    pull: no
-    build: yes
-    create: no
-    restart: yes
-    purge: yes
+    pull: false
+    build: true
+    create: false
+    restart: true
+    purge: true
     files:
       # <container_source_directory>/files/myecho/Dockerfile
       dockerfile: { name: "Dockerfile", mode: "0644" }

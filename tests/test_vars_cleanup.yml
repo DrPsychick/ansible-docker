@@ -8,11 +8,11 @@ containers:
     name: "mytestcontainer"
     image: "drpsychick/dnsmasq"
     directory: "dnsmasq"
-    remove: yes
+    remove: true
   mybuild:
     hosts: ["all"]
     name: "mybuildtest"
     image: "mybuildtest"
     directory: "mybuildtest"
-    cleanup: yes
-    purge: yes
+    cleanup: true
+    purge: true

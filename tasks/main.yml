@@ -2,21 +2,21 @@
 # tasks file for drpsychick-docker
 
 - name: Assert "containers" is set
-  fail:
+  ansible.builtin.fail:
     msg: "'containers' variable must define at least one container"
   when: containers|length == 0
 
 # use different names internally, because include_vars cannot override set_fact
 - name: Set global variables
-  set_fact:
-    docker_deploy_only: "{{ container_only|default(false)|bool }}"
-    docker_deploy_forcebuild: "{{ container_forcebuild|default(false)|bool }}"
-    docker_deploy_forcecreate: "{{ container_forcecreate|default(false)|bool }}"
-    docker_deploy_forcerestart: "{{ container_forcerestart|default(false)|bool }}"
-    docker_deploy_sourcedir: '{{ container_default_sourcedir|default("") }}'
+  ansible.builtin.set_fact:
+    docker_deploy_only: "{{ container_only | default(false) | bool }}"
+    docker_deploy_forcebuild: "{{ container_forcebuild | default(false) | bool }}"
+    docker_deploy_forcecreate: "{{ container_forcecreate | default(false) | bool }}"
+    docker_deploy_forcerestart: "{{ container_forcerestart | default(false) | bool }}"
+    docker_deploy_sourcedir: '{{ container_default_sourcedir | default("") }}'
 
 - name: Variable check
-  include_tasks: variable_check.yml
+  ansible.builtin.include_tasks: variable_check.yml
   loop: "{{ containers | flatten }}"
   loop_control:
     loop_var: cname
@@ -24,7 +24,7 @@
     and (not docker_deploy_only or docker_deploy_only == cname))
 
 - name: Process container
-  include_tasks: container.yml
+  ansible.builtin.include_tasks: container.yml
   loop: "{{ containers | flatten }}"
   loop_control:
     loop_var: cname

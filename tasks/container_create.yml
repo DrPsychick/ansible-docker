@@ -2,7 +2,7 @@
 
 # skip ansible lint warnings as we want to allow all kinds of shell magic
 - name: "{{ msg_prefix }} - Run 'pre_command'"
-  shell: "{{ container.pre_command }}"
+  ansible.builtin.shell: "{{ container.pre_command }}"
   args:
     chdir: '{{ "." if container_dir is skipped else container.basedir+"/"+container.directory }}'
   when: container.pre_command != ""
@@ -10,7 +10,7 @@
     - skip_ansible_lint
 
 - name: "{{ msg_prefix }} - Create container"
-  shell: |
+  ansible.builtin.shell: |
     docker create --restart={{ container.restart_policy }} {{ container.create_parameters }} \
     --name {{ container.name }} {{ container.image }}:{{ container.version }} {{ container.run_command }}
   args:
@@ -20,7 +20,7 @@
     - skip_ansible_lint
 
 - name: "{{ msg_prefix }} - Test container"
-  shell: |
+  ansible.builtin.shell: |
     docker run --rm {{ container.create_parameters }} --name {{ container.name }}-test \
     {{ container.image }}:{{ container.version }} {{ container.test_command }}
   args:
@@ -30,10 +30,11 @@
   tags:
     - skip_ansible_lint
 
-- name: "{{ msg_prefix }} - Test output"
-  debug: var=container_test.stdout_lines
+- name: "{{ msg_prefix }} - Test output" # noqa no-handler
+  ansible.builtin.debug:
+    var: container_test.stdout_lines
   when: container_test is changed
 
-- name: "{{ msg_prefix }} - Start container"
-  command: docker start {{ container.name }}
+- name: "{{ msg_prefix }} - Start container" # noqa no-changed-when
+  ansible.builtin.command: docker start {{ container.name }}
   when: container.restart or (container_exists and container_stop is changed)

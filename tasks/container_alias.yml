@@ -1,11 +1,12 @@
 ---
 
 - name: "{{ msg_prefix }} - Setup aliases"
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~/.bash_aliases
     line: "alias container.{{ container.name }}.{{ item.name }}='{{ item.cmd }} {{ container.name }}'"
     regexp: "^alias container.{{ container.name }}.{{ item.name }}.*"
-    create: yes
-  become: yes
+    create: true
+    mode: "0644"
+  become: true
   become_user: "{{ container.owner }}"
   with_items: "{{ container.aliases }}"
