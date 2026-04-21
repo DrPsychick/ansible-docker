@@ -3,7 +3,7 @@
 - name: "{{ cname }} - Set container variable"
   set_fact:
     container: "{{ containers[cname] }}"
-    msg_prefix: "| {{ cname }} @ {{ ansible_hostname|lower }} |"
+    msg_prefix: "| {{ cname }} @ {{ ansible_facts['hostname']|lower }} |"
 
 - name: "{{ msg_prefix }} - Assert required variables"
   fail:
@@ -28,19 +28,19 @@
 - name: "{{ msg_prefix }} - Assert directory must be defined"
   fail:
     msg: "'container_default_basedir' and/or container 'directory' variable are not set!"
-  when: not container_default_basedir or not container.directory
+  when: not container_default_basedir is defined or not container.directory is defined
 
 - name: "{{ msg_prefix }} - Assert 'forcebuild' requires 'build'"
   fail:
     msg: "'container_forcebuild' requires 'build' to be yes/true"
-  when: docker_deploy_forcebuild and (container.build is not defined or not container.build)
+  when: docker_deploy_forcebuild and (container.build|default(false))
 
 - name: "{{ msg_prefix }} - Assert 'forcecreate' requires 'create'"
   fail:
     msg: "'container_forcecreate' requires 'create' to be yes/true"
-  when: docker_deploy_forcecreate and (container.create is not defined or not container.create)
+  when: docker_deploy_forcecreate and (container.create|default(false))
 
 - name: "{{ msg_prefix }} - Assert 'forcerestart' requires 'restart'"
   fail:
     msg: "'container_forcerestart' requires 'restart' to be yes/true"
-  when: docker_deploy_forcerestart and (container.restart is not defined or not container.restart)
+  when: docker_deploy_forcerestart and (container.restart|default(false))
