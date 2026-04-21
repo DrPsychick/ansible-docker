@@ -9,18 +9,18 @@
 # use different names internally, because include_vars cannot override set_fact
 - name: Set global variables
   set_fact:
-    docker_deploy_only: "{{ false if container_only is not defined else container_only|bool }}"
-    docker_deploy_forcebuild: "{{ false if container_forcebuild is not defined else container_forcebuild|bool }}"
-    docker_deploy_forcecreate: "{{ false if container_forcecreate is not defined else container_forcecreate|bool }}"
-    docker_deploy_forcerestart: "{{ false if container_forcerestart is not defined else container_forcerestart|bool }}"
-    docker_deploy_sourcedir: '{{ "" if not container_default_sourcedir else container_default_sourcedir }}'
+    docker_deploy_only: "{{ container_only|default(false)|bool }}"
+    docker_deploy_forcebuild: "{{ container_forcebuild|default(false)|bool }}"
+    docker_deploy_forcecreate: "{{ container_forcecreate|default(false)|bool }}"
+    docker_deploy_forcerestart: "{{ container_forcerestart|default(false)|bool }}"
+    docker_deploy_sourcedir: '{{ container_default_sourcedir|default("") }}'
 
 - name: Variable check
   include_tasks: variable_check.yml
   loop: "{{ containers | flatten }}"
   loop_control:
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
+  when: ((ansible_facts['hostname']|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))
 
 - name: Process container
@@ -28,5 +28,5 @@
   loop: "{{ containers | flatten }}"
   loop_control:
     loop_var: cname
-  when: ((ansible_hostname|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
+  when: ((ansible_facts['hostname']|lower in containers[cname].hosts or 'all' in containers[cname].hosts)
     and (not docker_deploy_only or docker_deploy_only == cname))

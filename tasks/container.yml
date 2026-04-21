@@ -3,7 +3,7 @@
 - name: "{{ cname }} - Set container variable"
   set_fact:
     container: "{{ containers[cname] }}"
-    msg_prefix: "| {{ cname }} @ {{ ansible_hostname|lower }} |"
+    msg_prefix: "| {{ cname }} @ {{ ansible_facts['hostname']|lower }} |"
 
 - name: "{{ msg_prefix }} - Set defaults"
   set_fact:
@@ -50,10 +50,10 @@
     path: "{{ container.basedir }}/{{ container.directory }}/{{ container.templates[tname].name
       | regex_replace('[^/]*$', '') }}"
     state: directory
-  with_items: "{{ container.templates }}"
+  with_items: "{{ (container.templates|default([])).keys() }}"
   loop_control:
     loop_var: tname
-  when: "container.templates is defined"
+  when: "container.templates|default([])|length > 0"
 
 - name: "{{ msg_prefix }} - Copy templates"
   template:
@@ -63,10 +63,10 @@
     group: "{{ container.group }}"
     mode: "{{ container.templates[tname].mode }}"
     force: "{{ container.templates[tname].force |default(true) }}"
-  with_items: "{{ container.templates }}"
+  with_items: "{{ (container.templates|default([])).keys() }}"
   loop_control:
     loop_var: tname
-  when: container.templates is defined
+  when: "container.templates|default([])|length > 0"
   register: container_templates
 
 - name: "{{ msg_prefix }} - Configuration changed?"
